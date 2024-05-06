@@ -6,3 +6,4 @@ transcoder_service/ca.pem
 upload_service/node_modules
 upload_service/.env
 upload_service/ca.pem
+watch_service/.env

@@ -5,67 +5,121 @@ import axios from 'axios';
 
 const UploadForm = () => {
 
-
+    const [title, setTitle] = useState('');
+    const [description, setDescription] = useState('');
+    const [author, setAuthor] = useState('');
    const [selectedFile, setSelectedFile] = useState(null);
-
 
    const handleFileChange = (e) => {
        setSelectedFile(e.target.files[0]);
    };
 
+   const handleUpload = async () => {
+    if (!title || !author) {
+      alert('Title and Author are required fields.');
+      return;
+    }
 
-   const handleSubmit = (e) => {
-       e.preventDefault();
-       handleFileUpload(selectedFile);
-   };
-
-
-   const handleFileUpload = async (file) => {
     try {
-
-        const chunkSize = 1*1024*1024; // 100mb chunks
-        const totalchunks = Math.ceil(file.size/chunkSize);
-        console.log(file.size);
-        console.log(chunkSize);
-        console.log(totalchunks);
-
-        let start = 0;
-
-        for(let chunkIndex = 0; chunkIndex < totalchunks; chunkIndex++) {
-          const chunk = file.slice(start, start + chunkSize);
-          start += chunkSize;
-
-          const formData = new FormData();
-          formData.append('filename', file.name);
-          formData.append('chunk', chunk);
-          formData.append('totalChunks', totalchunks);
-          formData.append('chunkIndex', chunkIndex);
-          console.log(formData)
-          console.log('Uploading chunk', chunkIndex + 1, 'of', totalchunks);
-
-          const res = await axios.post('http://localhost:8080/upload', formData, {
-            headers: {
-              'Content-Type': 'multipart/form-data'
-            } });
-          console.log(res.data);
+      const formData = new FormData();
+      formData.append('filename', selectedFile.name);
+      const initializeRes = await axios.post('http://localhost:8080/upload/initialize', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
         }
-      } catch (error) {
-        console.error('Error uploading file:', error);
+      }
+      );
+      const { uploadId } = initializeRes.data;
+      console.log('Upload id is ', uploadId);
+ 
+      const chunkSize = 5 * 1024 * 1024; // 5 MB chunks
+      const totalChunks = Math.ceil(selectedFile.size / chunkSize);
+ 
+      let start = 0;
+
+      const uploadPromises = [];
+ 
+      for (let chunkIndex = 0; chunkIndex < totalChunks; chunkIndex++) {
+ 
+        const chunk = selectedFile.slice(start, start + chunkSize);
+        start += chunkSize;
+        const chunkFormData = new FormData();
+        chunkFormData.append('filename', selectedFile.name);
+        chunkFormData.append('chunk', chunk);
+        chunkFormData.append('totalChunks', totalChunks);
+        chunkFormData.append('chunkIndex', chunkIndex);
+        chunkFormData.append('uploadId', uploadId);
+ 
+        const uploadPromise = axios.post('http://localhost:8080/upload', chunkFormData, {
+         headers: {
+           'Content-Type': 'multipart/form-data'
+         }
+       });
+       uploadPromises.push(uploadPromise);
       }
 
-     };
+      await Promise.all(uploadPromises);
+ 
+      const completeRes = await axios.post('http://localhost:8080/upload/complete', {
+        filename: selectedFile.name,
+        totalChunks: totalChunks,
+        uploadId: uploadId,
+        title: title,
+        description: description,
+        author: author
+      });
+ 
+      console.log(completeRes.data);
+    } catch (error) {
+      console.error('Error uploading file:', error);
+    }
+  };
 
 
  return (
-   <div>
-       <form onSubmit={handleSubmit}>
-           <input type="file" onChange={handleFileChange} />
-           <button type="submit"
-                   className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
-           Upload
-           </button>
-       </form>
-   </div>
+      <div className='container mx-auto max-w-lg p-10'>
+        <form encType="multipart/form-data">
+          <div className="mb-4">
+            <input type="text"
+                  name="title"
+                  placeholder="Title"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  required
+                  className="px-3 py-2 w-full border rounded-md focus:outline-none focus:border-blue-500" />
+          </div>
+          <div className="mb-4">
+            <input type="text"
+                  name="description"
+                  placeholder="Description"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  className="px-3 py-2 w-full border rounded-md focus:outline-none focus:border-blue-500" />
+          </div>
+          <div className="mb-4">
+            <input type="text"
+                  name="author"
+                  placeholder="Author"
+                  value={author}
+                  onChange={(e) => setAuthor(e.target.value)}
+                  required
+                  className="px-3 py-2 w-full border rounded-md focus:outline-none focus:border-blue-500" />
+          </div>
+          <div className="mb-4">
+            <input type="file"
+                  name="file"
+                  onChange={handleFileChange}
+                  className="px-3 py-2 w-full border rounded-md focus:outline-none focus:border-blue-500" />
+          </div>
+          <button
+            type="button"
+            onClick={handleUpload}
+            className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+          >
+            Upload
+          </button>
+        </form>
+      </div>
  )
 }
 
