@@ -2,6 +2,8 @@ import express from "express"
 import dotenv from "dotenv"
 import cors from "cors"
 import KafkaConfig from "./kafka/kafka.js";
+import convertToHLS from "./hls/transcode.js";
+import s3ToS3 from "./hls/s3ToS3.js";
 
 dotenv.config();
 const app = express();
@@ -15,12 +17,19 @@ app.use(cors({
 app.use(express.json());
 
 const kafkaconfig =  new KafkaConfig()
+
 kafkaconfig.consume("transcode", (value)=>{
-   console.log("got data from kafka : " , value)
+   const res = JSON.parse(value)
+   s3ToS3(res.title, res.key)
 })
 
 app.get('/', (req, res) => {
    res.send('HHLD YouTube Transcoder')
+})
+
+app.get('/transcode', (req, res) => {
+   convertToHLS()
+   res.send("Transcoding done")
 })
 
 app.listen(port, () => {

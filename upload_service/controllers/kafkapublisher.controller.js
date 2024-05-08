@@ -21,4 +21,26 @@ const sendMessageToKafka = async (req, res) => {
    }
 }
 
+export const pushVideoEncodingToKafka = async (title, key) => {
+    try{
+        const message = {
+            "title" : title,
+            "key": key
+        }
+       console.log("body : ", message)
+       const kafkaconfig = new KafkaConfig()
+       const msgs = [
+           {
+               key: "video",
+               value: JSON.stringify(message)
+           }
+       ]
+       const result = await kafkaconfig.produce("transcode", msgs)
+       console.log("result of produce : ", result)
+    }catch(error){
+        console.log(error)
+    }
+}
+
 export default sendMessageToKafka;
+
