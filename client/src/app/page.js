@@ -1,17 +1,11 @@
 import YouTubeHome from "./pages/Home";
-import NavBar from "./components/navbar";
-import SearchBar from "./components/searchbar";
+import NavBar from "./_components/navbar";
+import SearchBar from "./_components/searchbar";
 
 export default function Home() {
   return (
-    <div>
-      <NavBar />
-      <SearchBar />
+    <div>      
       <YouTubeHome />
-      {/* <UploadForm /> */}
-      {/* <Room />
-      <Auth /> */}
-      {/* <VideoPlayer /> */}
     </div>
   );
 }
