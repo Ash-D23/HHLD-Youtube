@@ -12,7 +12,7 @@ const YouTubeHome = () => {
 
    return (
        <div className='w-screen home-height bg-gray-800 flex'>
-            <Sidebar />
+            <Sidebar tab={"home"} />
             <VideoList />
         </div>
    );

@@ -4,8 +4,8 @@ import SearchBar from "./_components/searchbar";
 
 export default function Home() {
   return (
-    <div>      
+    <>      
       <YouTubeHome />
-    </div>
+    </>
   );
 }
