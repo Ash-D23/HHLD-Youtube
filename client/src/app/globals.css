@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .home-height{
-    min-height: calc(100vh - 4rem);
+    height: calc(100vh - 4rem);
 }
 
 ::-webkit-scrollbar {

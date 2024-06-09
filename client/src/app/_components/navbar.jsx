@@ -26,7 +26,7 @@ const NavBar = () => {
 
    return (
        <div>
-           <nav className="bg-white border-gray-200 bg-gray-900">
+           <nav className="border-gray-200 bg-gray-900">
                <div className="w-full flex flex-wrap items-center justify-between items-center p-3 px-4">
                     <div className='flex'>
                         <button onClick={toggleMenu} data-collapse-toggle="navbar-hamburger" type="button" class="inline-flex items-center justify-center p-2 w-10 h-10 text-sm rounded-lg hover:bg-gray-100 focus:outline-none text-gray-400 hover:bg-gray-700" aria-controls="navbar-hamburger" aria-expanded="false">
@@ -56,22 +56,22 @@ const NavBar = () => {
 
                             {showProfile? <div class="absolute top-11 right-4 z-50 my-4 text-base list-none divide-y divide-gray-100 rounded-lg shadow bg-gray-700 divide-gray-600" id="user-dropdown">
                                 <div class="px-4 py-3">
-                                    <span class="block text-sm text-gray-900 text-white">{data?.user?.name}</span>
+                                    <span class="block text-sm text-white">{data?.user?.name}</span>
                                 </div>
                                 <ul class="py-2" aria-labelledby="user-menu-button">
                                     <li>
-                                        <a class="block px-4 py-2 text-sm text-gray-700  hover:bg-gray-600 text-gray-200 hover:text-white">Dashboard</a>
+                                        <a class="block px-4 py-2 text-sm  hover:bg-gray-600 text-gray-200 hover:text-white cursor-pointer">Dashboard</a>
                                     </li>
                                     <li>
-                                         <a class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-600 text-gray-200 hover:text-white">Settings</a>
+                                         <a class="block px-4 py-2 text-sm hover:bg-gray-600 text-gray-200 hover:text-white cursor-pointer">Settings</a>
                                     </li>
                                     <li>
-                                        <a onClick={logout} class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-600 text-gray-200 hover:text-white">Sign out</a>
+                                        <a onClick={logout} class="block px-4 py-2 text-sm hover:bg-gray-600 text-gray-200 hover:text-white cursor-pointer">Sign out</a>
                                     </li>
                                 </ul>
                             </div> : null}
                         </div> : <div className='flex items-center'>
-                        <button onClick={loginHandler} type="button" class="text-gray-300 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-3 py-2 text-center border-gray-600 text-gray-400 hover:text-white hover:bg-gray-600 focus:ring-gray-800">Sign In</button>
+                        <button onClick={loginHandler} type="button" class="text-gray-300 hover:text-white border focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-3 py-2 text-center border-gray-600 text-gray-400 hover:text-white hover:bg-gray-600 focus:ring-gray-800">Sign In</button>
                         </div> }
                    </div>
                </div>
