@@ -1,9 +1,12 @@
 import React from 'react'
 import { useMenuStore } from '../zustand/menuActiveStore'
+import { useSession, signOut } from "next-auth/react"
 
 const sidebar = () => {
 
     const { menuActive } = useMenuStore()
+    const { data } = useSession()
+    const logout = () => signOut()
 
   return (
     <div className='dark:bg-gray-800 flex flex-col p-3 ml-1 pb-6'>
@@ -31,12 +34,12 @@ const sidebar = () => {
             </svg>
             <p className={`${menuActive ? 'text-sm' : 'text-xs'} font-medium pt-1`}>You</p>
         </div>
-        <div className={`flex ${menuActive ? 'flex-row gap-x-3' : 'flex-col'} items-center py-4 cursor-pointer dark:text-white hover:dark:text-blue-400`}>
+        { data ? <div onClick={logout} className={`flex ${menuActive ? 'flex-row gap-x-3' : 'flex-col'} items-center py-4 cursor-pointer dark:text-white hover:dark:text-blue-400`}>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75" />
             </svg>
-            <p className={`${menuActive ? 'text-sm' : 'text-xs'} font-medium pt-1`}>Logout</p>
-        </div>
+            <p className={`${menuActive ? 'text-sm' : 'text-xs'} font-medium pt-1`}>Logout</p> 
+        </div> : null }
     </div>
   )
 }
