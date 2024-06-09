@@ -33,7 +33,7 @@ const NavBar = () => {
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
                             </svg>
                         </button>
-                        <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white ml-1.5 cursor-pointer">YouTube</span>
+                        <span class="self-center text-xl font-semibold whitespace-nowrap text-white ml-1.5 cursor-pointer">YouTube</span>
                     </div>
                    <SearchBar />
                    <div class=" w-full md:block md:w-auto pr-3" id="navbar-default">
@@ -52,19 +52,19 @@ const NavBar = () => {
                             </div> }
                             </button>
 
-                            {showProfile? <div class="absolute top-11 right-4 z-50 my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow bg-gray-700 divide-gray-600" id="user-dropdown">
+                            {showProfile? <div class="absolute top-11 right-4 z-50 my-4 text-base list-none divide-y divide-gray-100 rounded-lg shadow bg-gray-700 divide-gray-600" id="user-dropdown">
                                 <div class="px-4 py-3">
                                     <span class="block text-sm text-gray-900 text-white">{data?.user?.name}</span>
                                 </div>
                                 <ul class="py-2" aria-labelledby="user-menu-button">
                                     <li>
-                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:bg-gray-600 text-gray-200 hover:text-white">Dashboard</a>
+                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700  hover:bg-gray-600 text-gray-200 hover:text-white">Dashboard</a>
                                     </li>
                                     <li>
-                                         <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:bg-gray-600 text-gray-200 hover:text-white">Settings</a>
+                                         <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-600 text-gray-200 hover:text-white">Settings</a>
                                     </li>
                                     <li>
-                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:bg-gray-600text-gray-200 hover:text-white">Sign out</a>
+                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-600 text-gray-200 hover:text-white">Sign out</a>
                                     </li>
                                 </ul>
                             </div> : null}
