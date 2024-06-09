@@ -3,10 +3,13 @@ import React from 'react'
 import { useSession, signIn, signOut } from "next-auth/react"
 import { useRouter } from 'next/navigation'
 import SearchBar from './searchbar'
+import { useMenuStore } from '../zustand/menuActiveStore'
 
 const NavBar = () => {
    const router = useRouter()
    const { data } = useSession()
+   const { toggleMenu } = useMenuStore()
+
    console.log('data---------- ', data);
 
    const goToUpload = () => {
@@ -15,10 +18,10 @@ const NavBar = () => {
 
    return (
        <div>
-           <nav class="bg-white border-gray-200 dark:bg-gray-900">
-               <div class="w-full flex flex-wrap items-center justify-between items-center p-3 px-4">
+           <nav className="bg-white border-gray-200 dark:bg-gray-900">
+               <div className="w-full flex flex-wrap items-center justify-between items-center p-3 px-4">
                     <div className='flex'>
-                        <button data-collapse-toggle="navbar-hamburger" type="button" class="inline-flex items-center justify-center p-2 w-10 h-10 text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-hamburger" aria-expanded="false">
+                        <button onClick={toggleMenu} data-collapse-toggle="navbar-hamburger" type="button" class="inline-flex items-center justify-center p-2 w-10 h-10 text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none dark:text-gray-400 dark:hover:bg-gray-700" aria-controls="navbar-hamburger" aria-expanded="false">
                             <span class="sr-only">Open main menu</span>
                             <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
@@ -28,7 +31,7 @@ const NavBar = () => {
                     </div>
                    <SearchBar />
                    <div class=" w-full md:block md:w-auto pr-3" id="navbar-default">
-                        { true ? <div className='flex gap-6 justify-center items-center'>
+                        { data ? <div className='flex gap-6 justify-center items-center'>
                                     
                             <a class="flex items-center space-x-2 rtl:space-x-reverse dark:text-white mr-2 cursor-pointer hover:dark:text-blue-400">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
