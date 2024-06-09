@@ -10,9 +10,9 @@ const YouTubeHome = () => {
 
 
    return (
-       <div className='w-screen home-height dark:bg-gray-800 flex'>
+       <div className='w-screen home-height bg-gray-800 flex'>
             <Sidebar />
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+            <div className="">
             
             </div>
         </div>
