@@ -47,7 +47,9 @@ const NavBar = () => {
 
                             <button onClick={() => toggleShowProfile(prev => !prev)} type="button" class="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
                                 <span class="sr-only">Open user menu</span>
-                                <img class="w-8 h-8 rounded-full" src={data?.user?.image} alt="user photo" />
+                                { data.user?.image ? <img class="w-8 h-8 rounded-full" src={data?.user?.image} alt="user photo" /> : <div className="relative w-7 h-7 overflow-hidden bg-gray-200 rounded-full">
+                                <svg className="absolute w-8 h-8 text-gray-400 -left-0.5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+                            </div> }
                             </button>
 
                             {showProfile? <div class="absolute top-11 right-4 z-50 my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600" id="user-dropdown">

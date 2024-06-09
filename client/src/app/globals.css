@@ -5,3 +5,27 @@
 .home-height{
     min-height: calc(100vh - 4rem);
 }
+
+::-webkit-scrollbar {
+    height: 3px;              /* height of horizontal scrollbar ← You're missing this */
+    width: 3px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: transparent; 
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #0e0d0d; 
+  }
+  
+  ::-webkit-scrollbar-thumb:horizontal{
+    border-radius: 5px;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+  }
