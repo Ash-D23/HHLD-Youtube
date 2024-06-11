@@ -10,12 +10,12 @@ const UploadForm = () => {
 
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
-    const [author, setAuthor] = useState('');
-   const [selectedFile, setSelectedFile] = useState(null);
-   const { menuActive } = useMenuStore()
+    const [thumbnail, setThumbnail] = useState(null);
+    const [selectedFile, setSelectedFile] = useState(null);
+    const [progress, setProgress] = useState({})
+    const { menuActive } = useMenuStore()
 
-   const {data} = useSession();
-  console.log(data)
+    const {data} = useSession();
         // useEffect(() => {
         // console.log('data------- ', data);
         // if(!data) {
@@ -29,10 +29,12 @@ const UploadForm = () => {
    };
 
    const handleUpload = async () => {
-    if (!title || !author) {
+    if (!title || !data) {
       alert('Title and Author are required fields.');
       return;
     }
+
+    
 
     try {
       const formData = new FormData();
@@ -52,6 +54,8 @@ const UploadForm = () => {
       let start = 0;
 
       const uploadPromises = [];
+
+      setProgress({ current: 0, enabled: true, total: totalChunks })
  
       for (let chunkIndex = 0; chunkIndex < totalChunks; chunkIndex++) {
  
@@ -65,10 +69,13 @@ const UploadForm = () => {
         chunkFormData.append('uploadId', uploadId);
  
         const uploadPromise = axios.post('http://localhost:8080/upload', chunkFormData, {
-         headers: {
-           'Content-Type': 'multipart/form-data'
-         }
-       });
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }).then(() => {
+          setProgress( prev => ({ current: prev.current+1, enabled: true, total: totalChunks }))
+        });
+        
        uploadPromises.push(uploadPromise);
       }
 
@@ -80,15 +87,21 @@ const UploadForm = () => {
         uploadId: uploadId,
         title: title,
         description: description,
-        author: author
+        author: data?.user?.name
       });
+
+      setProgress({ current: 0, enabled: false, total: 0 })
+      setTitle('')
+      setDescription('')
+      setSelectedFile(null)
+      setThumbnail(null)
  
       console.log(completeRes.data);
     } catch (error) {
       console.error('Error uploading file:', error);
+      setProgress({ current: 0, enabled: false, total: 0 })
     }
   };
-
 
  return (
       <div className='bg-gray-800 home-height w-screen flex'>
@@ -105,7 +118,7 @@ const UploadForm = () => {
                       <div class="mt-4 flex text-sm leading-6 text-gray-600">
                         <label for="file-upload" class="relative cursor-pointer rounded-md font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500">
                           <span>Upload a file</span>
-                          <input id="file-upload" name="file-upload" type="file" class="sr-only" />
+                          <input id="file-upload" name="file-upload" type="file" onChange={handleFileChange} class="sr-only" />
                         </label>
                         <p class="pl-1">or drag and drop</p>
                       </div>
@@ -139,7 +152,19 @@ const UploadForm = () => {
                 </form>
               
             </div>
-            <div className='flex pt-2'>
+            <div className='flex flex-col pt-1'>
+              { progress?.enabled ? 
+              <>
+                <div class="flex justify-between mb-1">
+                  <span class="text-base font-medium text-sm text-gray-500">Uploading</span>
+                  <span class="text-base font-medium text-sm text-gray-500">{`${Math.round(progress.current*100/progress.total)}%`}</span>
+                </div>
+                <div class="w-full rounded h-2.5 bg-gray-700 mb-4">
+                  <div class="bg-blue-600 h-2.5 rounded" style={{ width: `${Math.round(progress.current*100/progress.total)}%`}}></div>
+                </div>
+              </>
+              : null }
+
               <button
                     type="button"
                     onClick={handleUpload}

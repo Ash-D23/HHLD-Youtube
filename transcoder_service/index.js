@@ -20,7 +20,7 @@ const kafkaconfig =  new KafkaConfig()
 
 kafkaconfig.consume("transcode", (value)=>{
    const res = JSON.parse(value)
-   s3ToS3(res.title, res.key)
+   s3ToS3(res.title, res.key, res.videoId)
 })
 
 app.get('/', (req, res) => {

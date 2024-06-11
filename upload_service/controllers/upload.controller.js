@@ -4,7 +4,6 @@ const uploadFileToS3 = async(req, res) => {
 
    console.log('Upload req received');
 
-
    if(!req.files || !req.files['chunk'] || !req.body['totalChunks'] || !req.body['chunkIndex']){
       return res.status(400).send('Missing data required')
    }
@@ -19,7 +18,6 @@ const uploadFileToS3 = async(req, res) => {
        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
    });
-
 
    const params = {
        Bucket: process.env.AWS_BUCKET,

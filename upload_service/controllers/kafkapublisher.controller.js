@@ -21,11 +21,12 @@ const sendMessageToKafka = async (req, res) => {
    }
 }
 
-export const pushVideoEncodingToKafka = async (title, key) => {
+export const pushVideoEncodingToKafka = async (title, key, videoId) => {
     try{
         const message = {
             "title" : title,
-            "key": key
+            "key": key,
+            "videoId": videoId
         }
        console.log("body : ", message)
        const kafkaconfig = new KafkaConfig()

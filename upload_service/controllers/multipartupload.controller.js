@@ -105,9 +105,10 @@ export const completeUpload = async (req, res) => {
        console.log("data----- ", uploadResult);
        const url = uploadResult.Location
 
-       await addVideoDetailsToDB(title, description, author, url);     
-       pushVideoEncodingToKafka(title, uploadResult.Key)
-       await PushToOpenSearch(title, description, author, url);
+       const result = await addVideoDetailsToDB(title, description, author, url); 
+       console.log(result)    
+       pushVideoEncodingToKafka(title, uploadResult.Key, result.id)
+    //    await PushToOpenSearch(title, description, author, url);
        return res.status(200).json({ message: "Uploaded successfully!!!" });
 
    } catch (error) {

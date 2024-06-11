@@ -4,24 +4,23 @@ import fs from "fs";
 import path from "path";
 import ffmpeg from "fluent-ffmpeg"
 import ffmpegStatic from "ffmpeg-static"
+import { updateVideoDetailsToDB } from "../db/db.js";
 ffmpeg.setFfmpegPath(ffmpegStatic)
 
-
 dotenv.config();
-
 
 const s3 = new AWS.S3({
    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
 });
 
-
 const mp4FileName = 'trial1.mp4';
 const bucketName = process.env.AWS_BUCKET;
 const hlsFolder = 'hls_output';
 
 
-const s3ToS3 = async (title, key) => {
+const s3ToS3 = async (title, key, videoId) => {
+   console.log(videoId)
    console.log('Starting script');
    console.time('req_time');
 
@@ -120,8 +119,12 @@ const s3ToS3 = async (title, key) => {
        )}_master.m3u8`;
        const masterPlaylistPath = `hls_output/${masterPlaylistFileName}`;
        fs.writeFileSync(masterPlaylistPath, masterPlaylist);
-       console.log(`HLS master m3u8 playlist generated`);
+       console.log(`HLS master m3u8 playlist generated - ${masterPlaylistPath}`);
 
+       const transcodeUrl = `https://${bucketName}.s3.amazonaws.com/${masterPlaylistPath}`
+
+       const result = await updateVideoDetailsToDB(videoId, transcodeUrl)
+       console.log(result)
 
        console.log(`Deleting locally downloaded s3 mp4 file`);
 
@@ -133,29 +136,29 @@ const s3ToS3 = async (title, key) => {
        console.log(`Uploading media m3u8 playlists and ts segments to s3`);
 
 
-       const files = fs.readdirSync(hlsFolder);
-       for (const file of files) {
-           if (!file.startsWith(mp4FileName.replace('.', '_'))) {
-               continue;
-           }
-           const filePath = path.join(hlsFolder, file);
-           const fileStream = fs.createReadStream(filePath);
-           const uploadParams = {
-               Bucket: bucketName,
-               Key: `${hlsFolder}/${file}`,
-               Body: fileStream,
-               ContentType: file.endsWith('.ts')
-                   ? 'video/mp2t'
-                   : file.endsWith('.m3u8')
-                   ? 'application/x-mpegURL'
-                   : null
-           };
-           await s3.upload(uploadParams).promise();
-           fs.unlinkSync(filePath);
-       }
-       console.log(
-           `Uploaded media m3u8 playlists and ts segments to s3. Also deleted locally`
-       );
+    //    const files = fs.readdirSync(hlsFolder);
+    //    for (const file of files) {
+    //        if (!file.startsWith(mp4FileName.replace('.', '_'))) {
+    //            continue;
+    //        }
+    //        const filePath = path.join(hlsFolder, file);
+    //        const fileStream = fs.createReadStream(filePath);
+    //        const uploadParams = {
+    //            Bucket: bucketName,
+    //            Key: `${hlsFolder}/${file}`,
+    //            Body: fileStream,
+    //            ContentType: file.endsWith('.ts')
+    //                ? 'video/mp2t'
+    //                : file.endsWith('.m3u8')
+    //                ? 'application/x-mpegURL'
+    //                : null
+    //        };
+    //        await s3.upload(uploadParams).promise();
+    //        fs.unlinkSync(filePath);
+    //    }
+    //    console.log(
+    //        `Uploaded media m3u8 playlists and ts segments to s3. Also deleted locally`
+    //    );
 
 
        console.log('Success. Time taken: ');
