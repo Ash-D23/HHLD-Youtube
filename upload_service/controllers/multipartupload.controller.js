@@ -66,7 +66,9 @@ export const uploadChunk = async (req, res) => {
 export const completeUpload = async (req, res) => {
    try {
        console.log('Completing Upload');
+       console.log(req.file)
        const { filename, totalChunks, uploadId, title, description, author } = req.body;
+
        const uploadedParts = [];
 
        // Build uploadedParts array from request body
@@ -102,12 +104,22 @@ export const completeUpload = async (req, res) => {
        // Completing multipart upload using promise
        const uploadResult = await s3.completeMultipartUpload(completeParams).promise();
 
+       // Upload thumbnail
+       const params = {
+            Bucket: bucketName,
+            Key: `thumbnail/${title}.jpg`,
+            Body: req.file.buffer,
+        };
+
+        const thumnailData = await s3.upload(params).promise()
+        console.log(thumnailData.Location)
+
        console.log("data----- ", uploadResult);
        const url = uploadResult.Location
 
-       const result = await addVideoDetailsToDB(title, description, author, url); 
-       console.log(result)    
-       pushVideoEncodingToKafka(title, uploadResult.Key, result.id)
+    //    const result = await addVideoDetailsToDB(title, description, author, url); 
+    //    console.log(result)    
+    //    pushVideoEncodingToKafka(title, uploadResult.Key, result.id)
     //    await PushToOpenSearch(title, description, author, url);
        return res.status(200).json({ message: "Uploaded successfully!!!" });
 
@@ -121,7 +133,7 @@ export const uploadToDb = async (req, res) => {
     console.log("Adding details to DB");
     try {
         const videoDetails = req.body;
-        await addVideoDetailsToDB(videoDetails.title, videoDetails.description, videoDetails.author, videoDetails.url);    
+        await addVideoDetailsToDB(videoDetails.title, videoDetails.description, videoDetails.author, videoDetails.url, thumnailData.Location);    
         return res.status(200).send("success");
     } catch (error) {
         console.log("Error in adding to DB ", error);

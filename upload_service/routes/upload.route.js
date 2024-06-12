@@ -12,7 +12,7 @@ router.post('/initialize', upload.none(), initializeUpload);
 router.post('/', upload.single('chunk'), uploadChunk);
 
 // Route for completing the upload
-router.post('/complete', completeUpload);
+router.post('/complete', upload.single('thumbnail'), completeUpload);
 
 router.post('/uploadToDB', uploadToDb);
 
