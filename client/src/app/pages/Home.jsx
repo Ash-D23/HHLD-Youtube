@@ -9,11 +9,25 @@ const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
 
 const YouTubeHome = () => {
 
+    const [videoList, setVideoList] = useState([])
+
+    const getVideoList = async () => {
+        try{
+            const res = await axios.get('http://localhost:8082/watch/home')
+            setVideoList(res.data)
+        }catch(err){
+            console.log(err)
+        }
+    }
+
+    useEffect(() => {
+        getVideoList()
+    }, [])
 
    return (
        <div className='w-screen home-height bg-gray-800 flex'>
             <Sidebar tab={"home"} />
-            <VideoList />
+            <VideoList videoList={videoList} />
         </div>
    );
 };
