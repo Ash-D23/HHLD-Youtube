@@ -121,11 +121,6 @@ const s3ToS3 = async (title, key, videoId) => {
        fs.writeFileSync(masterPlaylistPath, masterPlaylist);
        console.log(`HLS master m3u8 playlist generated - ${masterPlaylistPath}`);
 
-       const transcodeUrl = `https://${bucketName}.s3.amazonaws.com/${masterPlaylistPath}`
-
-       const result = await updateVideoDetailsToDB(videoId, transcodeUrl)
-       console.log(result)
-
        console.log(`Deleting locally downloaded s3 mp4 file`);
 
 
@@ -136,30 +131,34 @@ const s3ToS3 = async (title, key, videoId) => {
        console.log(`Uploading media m3u8 playlists and ts segments to s3`);
 
 
-    //    const files = fs.readdirSync(hlsFolder);
-    //    for (const file of files) {
-    //        if (!file.startsWith(mp4FileName.replace('.', '_'))) {
-    //            continue;
-    //        }
-    //        const filePath = path.join(hlsFolder, file);
-    //        const fileStream = fs.createReadStream(filePath);
-    //        const uploadParams = {
-    //            Bucket: bucketName,
-    //            Key: `${hlsFolder}/${file}`,
-    //            Body: fileStream,
-    //            ContentType: file.endsWith('.ts')
-    //                ? 'video/mp2t'
-    //                : file.endsWith('.m3u8')
-    //                ? 'application/x-mpegURL'
-    //                : null
-    //        };
-    //        await s3.upload(uploadParams).promise();
-    //        fs.unlinkSync(filePath);
-    //    }
-    //    console.log(
-    //        `Uploaded media m3u8 playlists and ts segments to s3. Also deleted locally`
-    //    );
+       const files = fs.readdirSync(hlsFolder);
+       for (const file of files) {
+           if (!file.startsWith(mp4FileName.replace('.', '_'))) {
+               continue;
+           }
+           const filePath = path.join(hlsFolder, file);
+           const fileStream = fs.createReadStream(filePath);
+           const uploadParams = {
+               Bucket: bucketName,
+               Key: `${hlsFolder}/${file}`,
+               Body: fileStream,
+               ContentType: file.endsWith('.ts')
+                   ? 'video/mp2t'
+                   : file.endsWith('.m3u8')
+                   ? 'application/x-mpegURL'
+                   : null
+           };
+           await s3.upload(uploadParams).promise();
+           fs.unlinkSync(filePath);
+       }
+       console.log(
+           `Uploaded media m3u8 playlists and ts segments to s3. Also deleted locally`
+       );
 
+       const transcodeUrl = `https://${bucketName}.s3.amazonaws.com/${masterPlaylistPath}`
+
+       const result = await updateVideoDetailsToDB(videoId, transcodeUrl)
+       console.log(result)
 
        console.log('Success. Time taken: ');
        console.timeEnd('req_time');

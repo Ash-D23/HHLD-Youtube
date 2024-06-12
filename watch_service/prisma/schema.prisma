@@ -19,4 +19,6 @@ model VideoData {
   description String?
   author      String
   url         String
+  transcodeURL String
+  thumbnail String
 }
