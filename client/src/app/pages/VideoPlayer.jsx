@@ -2,9 +2,9 @@
 import React, { useRef, useEffect } from 'react';
 import Hls from 'hls.js';
 
-const VideoPlayer = () => {
+const VideoPlayer = ({ src }) => {
    const videoRef = useRef(null);
-   const src = "https://hhld-ak-youtube-app.s3.amazonaws.com/output/test_mp4_master.m3u8";
+//    const src = "https://hhld-ak-youtube-app.s3.amazonaws.com/output/test_mp4_master.m3u8";
 
    useEffect(() => {
        const video = videoRef.current;
@@ -25,7 +25,7 @@ const VideoPlayer = () => {
        }
    }, [src]);
 
-   return <video ref={videoRef} controls />;
+   return <video className="video-play" ref={videoRef} controls />;
 };
 
 export default VideoPlayer;
