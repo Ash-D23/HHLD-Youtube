@@ -31,10 +31,10 @@ export const VideoCard = ({ video }) => {
    }, [src]);
   
   return (
-    <div onClick={handleClick} className={`border rounded-lg shadow bg-gray-800 border-gray-700 h-fit max-w-72 cursor-pointer`}>
+    <div onClick={handleClick} className={`border rounded-lg shadow bg-gray-800 border-gray-700 h-fit max-w-72 relative hover:scale-y-110	 hover:scale-x-110 cursor-pointer`}>
       <a className={`group relative overflow-none`}>
-        <img className={`rounded-t-lg h-48 group-hover:hidden`} src={video.thumbnail} alt="" />
-        <video className={`hidden group-hover:block `} loop muted ref={videoRef}
+        <img className={`rounded-t-lg group-hover:hidden object-cover vcard-img`} src={video.thumbnail} alt="" />
+        <video className={`hidden group-hover:block object-cover vcard`} loop muted ref={videoRef}
           onMouseEnter={event => event.target.play()} onMouseLeave={event => event.target.pause()}/>
       </a>
       <div className="p-3">

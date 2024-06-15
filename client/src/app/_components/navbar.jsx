@@ -12,16 +12,19 @@ const NavBar = () => {
    const [showProfile, toggleShowProfile] = useState(false)
 
    const loginHandler = () => {
-        console.log("Signing in Google");
         signIn("google");
     }
 
-    const logout = () => signOut()
+   const logout = () => signOut()
 
    console.log('data---------- ', data);
 
    const goToUpload = () => {
        router.push('/upload')
+   }
+
+   const goToHome = () => {
+    router.push('/')
    }
 
    return (
@@ -35,13 +38,13 @@ const NavBar = () => {
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
                             </svg>
                         </button>
-                        <span class="self-center text-xl font-semibold whitespace-nowrap text-white ml-1.5 cursor-pointer">YouTube</span>
+                        <span onClick={goToHome} class="self-center text-xl font-semibold whitespace-nowrap text-white ml-1.5 cursor-pointer">YouTube</span>
                     </div>
                    <SearchBar />
                    <div class=" w-full md:block md:w-auto pr-3" id="navbar-default">
                         { data ? <div className='flex gap-6 justify-center items-center'>
                                     
-                            <a class="flex items-center space-x-2 rtl:space-x-reverse text-white mr-2 cursor-pointer hover:text-blue-400">
+                            <a onClick={goToUpload} class="flex items-center space-x-2 rtl:space-x-reverse text-white mr-2 cursor-pointer hover:text-blue-400">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
                                 </svg>

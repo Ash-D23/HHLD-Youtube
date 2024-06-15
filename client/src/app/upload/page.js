@@ -1,10 +1,11 @@
 "use client"
-import React, {useState, useEffect}  from 'react'
+import React, {useState}  from 'react'
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
-import { redirect } from 'next/navigation';
+import { ToastContainer, toast } from 'react-toastify';
 import Sidebar from "../_components/sidebar";
 import { useMenuStore } from '../zustand/menuActiveStore';
+import Login from '../_components/Login';
 
 const UploadForm = () => {
 
@@ -16,34 +17,34 @@ const UploadForm = () => {
     const { menuActive } = useMenuStore()
 
     const {data} = useSession();
-        // useEffect(() => {
-        // console.log('data------- ', data);
-        // if(!data) {
-        //     console.log('redirecting');
-        //     redirect("/");
-        // }
-        // }, [data])
 
    const handleFileChange = (e) => {
        setSelectedFile(e.target.files[0]);
    };
 
    const handleUpload = async () => {
-    if (!title || !data) {
-      alert('Title and Author are required fields.');
+    if (!title || description || thumbnail || !data) {
+      toast.error('Please fill all the details', {
+        position: "bottom-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark"
+      });
       return;
     }
-
-    
 
     try {
       const formData = new FormData();
       formData.append('filename', selectedFile.name);
       const initializeRes = await axios.post('http://localhost:8080/upload/initialize', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
         }
-      }
       );
       const { uploadId } = initializeRes.data;
       console.log('Upload id is ', uploadId);
@@ -102,12 +103,36 @@ const UploadForm = () => {
       setSelectedFile(null)
       setThumbnail(null)
  
-      console.log(completeRes.data);
+      toast.success('File Uploaded Succesfully', {
+        position: "bottom-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: "Bounce"
+      });
     } catch (error) {
-      console.error('Error uploading file:', error);
+      toast.error('An Error Occurred', {
+        position: "bottom-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: "Bounce"
+      });
       setProgress({ current: 0, enabled: false, total: 0 })
     }
   };
+
+  if(!data){
+    return <Login />
+  }
 
  return (
       <div className='bg-gray-800 home-height w-screen flex'>
@@ -182,6 +207,18 @@ const UploadForm = () => {
             </div>
           </div>
         </div>
+        <ToastContainer
+            position="bottom-center"
+            autoClose={3000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="dark"
+          />
       </div>
       
  )

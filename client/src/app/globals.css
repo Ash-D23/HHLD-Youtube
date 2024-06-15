@@ -34,3 +34,12 @@
     width: 965px;
     height: 540px;
   }
+
+  .vcard{
+    height: 180px
+  }
+
+  .vcard-img{
+    height: 180px;
+    width: 320px;
+  }

@@ -1,22 +1,31 @@
 import React from 'react'
 import { useSession, signOut } from "next-auth/react"
 import { useMenuStore } from '../zustand/menuActiveStore'
+import { useRouter } from 'next/navigation'
 
 const sidebar = ({ tab }) => {
-
+    const router = useRouter()
     const { menuActive } = useMenuStore()
     const { data } = useSession()
     const logout = () => signOut()
 
+    const goToUpload = () => {
+        router.push('/upload')
+    }
+
+    const goToHome = () => {
+        router.push('/')
+    }
+
   return (
     <div className='bg-gray-800 flex flex-col p-3 px-4 pb-6'>
-        <div className={`flex ${menuActive && tab === "home"  ? 'flex-row gap-x-3' : 'flex-col'} items-center py-4 cursor-pointer text-white hover:text-blue-400`}>
+        <div onClick={goToHome} className={`flex ${menuActive && tab === "home"  ? 'flex-row gap-x-3' : 'flex-col'} items-center py-4 cursor-pointer text-white hover:text-blue-400`}>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
                 <path strokeLinecap="round" strokeLinejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
             </svg>
             <p className={`${menuActive && tab === "home" ? 'text-sm' : 'text-xs'} font-medium pt-1`}>Home</p>
         </div>
-        <div className={`flex ${menuActive && tab === "home" ? 'flex-row gap-x-3' : 'flex-col'} items-center py-4 cursor-pointer text-white hover:text-blue-400`}>
+        <div onClick={goToUpload} className={`flex ${menuActive && tab === "home" ? 'flex-row gap-x-3' : 'flex-col'} items-center py-4 cursor-pointer text-white hover:text-blue-400`}>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
             </svg>

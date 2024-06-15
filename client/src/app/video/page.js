@@ -6,10 +6,12 @@ import VideoPlayer from '../pages/VideoPlayer'
 import Sidebar from "../_components/sidebar";
 import { useMenuStore } from '../zustand/menuActiveStore'
 import SimilarVideos from '../_components/SimilarVideos'
+import Loading from '../_components/Loading'
 
 const VideoPage = () => {
     const [videoURL, setVideoURL] = useState(null)
     const [videoData, setVideoData] = useState(null)
+    const [loading, setLoading] = useState(true)
     const searchParams = useSearchParams()
     const { menuActive } = useMenuStore()
  
@@ -32,6 +34,8 @@ const VideoPage = () => {
             setVideoURL(url)
         }catch(err){
             console.log(err)
+        }finally{
+            setLoading(false)
         }
     }
 
@@ -39,6 +43,9 @@ const VideoPage = () => {
         getVideoDetails()
     }, [id])
 
+    if(loading){
+        return <Loading />
+    }
 
   return (
     <div className='p-4 pl-0 bg-gray-800 text-white'>
@@ -46,7 +53,7 @@ const VideoPage = () => {
             { menuActive ? <Sidebar /> : null }
             <div className={`${menuActive ? 'ml-6' : 'ml-16'}`}>
                 <div className=' flex '>
-                    { videoURL ? <VideoPlayer src={videoURL} /> : <p>Loading...</p> }
+                    <VideoPlayer src={videoURL} />
                 </div>
                 <div className='pt-1 flex justify-between items-center'>
                     <div className='p-2'>
