@@ -23,7 +23,7 @@ const UploadForm = () => {
    };
 
    const handleUpload = async () => {
-    if (!title || description || thumbnail || !data) {
+    if (!title || !description || !thumbnail || !data) {
       toast.error('Please fill all the details', {
         position: "bottom-center",
         autoClose: 3000,
