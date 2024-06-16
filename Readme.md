@@ -29,4 +29,4 @@ Next JS, Node JS, Kafka, PostgreSQL, OpenSearch, AWS S3, Lambda.
 - Search Service
 
 ### Demo
-[![Watch the video](https://img.youtube.com/vi/VmbiF5EL2To/0.jpg)](https://www.youtube.com/watch?v=VmbiF5EL2To)
+[![Watch the video](https://img.youtube.com/vi/CjhdVCTO1f4/0.jpg)](https://www.youtube.com/watch?v=CjhdVCTO1f4)
