@@ -28,7 +28,7 @@ const SimilarVideos = () => {
   }
   return (
     <div className='pt-2 ml-2 flex flex-col grow'>
-        {videoList?.map((video) => <HorizontalVideo video={video} />)}
+        {videoList?.map((video, index) => <HorizontalVideo key={index} video={video} />)}
     </div>
   )
 }

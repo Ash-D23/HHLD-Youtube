@@ -3,7 +3,7 @@ import React, {useState}  from 'react'
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
 import { ToastContainer, toast } from 'react-toastify';
-import Sidebar from "../_components/sidebar";
+import Sidebar from "../_components/Sidebar";
 import { useMenuStore } from '../zustand/menuActiveStore';
 import Login from '../_components/Login';
 

@@ -39,8 +39,8 @@ const SearchBar
 
                         <div className='absolute z-50 top-10 bg-gray-600 w-full border-0 rounded max-h-28 overflow-y-scroll'>
                             <ul>
-                                {searchedVideos?.length > 1 ? searchedVideos.map((data) => (
-                                <li className='py-1 px-2 text-white'>
+                                {searchedVideos?.length > 1 ? searchedVideos.map((data, index) => (
+                                <li key={index} className='py-1 px-2 text-white'>
                                     {data.title}
                                 </li>
                             )) : null}

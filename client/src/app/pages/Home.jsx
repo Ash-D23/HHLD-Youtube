@@ -1,7 +1,7 @@
 "use client"
 import React, { useEffect, useState } from 'react';
 import axios from "axios"
-import Sidebar from "../_components/sidebar";
+import Sidebar from "../_components/Sidebar";
 import dynamic from 'next/dynamic'
 import { useVideosStore } from '../zustand/useVideosStore';
 import VideoList from '../_components/VideoList';

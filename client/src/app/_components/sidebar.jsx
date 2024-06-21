@@ -1,9 +1,10 @@
+"use client"
 import React from 'react'
 import { useSession, signOut } from "next-auth/react"
 import { useMenuStore } from '../zustand/menuActiveStore'
 import { useRouter } from 'next/navigation'
 
-const sidebar = ({ tab }) => {
+const Sidebar = ({ tab }) => {
     const router = useRouter()
     const { menuActive } = useMenuStore()
     const { data } = useSession()
@@ -53,4 +54,4 @@ const sidebar = ({ tab }) => {
   )
 }
 
-export default sidebar
+export default Sidebar
