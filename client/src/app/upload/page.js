@@ -40,7 +40,7 @@ const UploadForm = () => {
     try {
       const formData = new FormData();
       formData.append('filename', selectedFile.name);
-      const initializeRes = await axios.post('http://localhost:8080/upload/initialize', formData, {
+      const initializeRes = await axios.post(`${NEXT_PUBLIC_UPLOAD_URL}/upload/initialize`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }

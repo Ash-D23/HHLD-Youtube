@@ -9,8 +9,7 @@ const SimilarVideos = () => {
 
   const getRecommendedVideo = async () => {
     try{
-        const res = await axios.get('http://localhost:8082/watch/topVideos')
-        console.log(res)
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_WATCH_URL}/watch/topVideos`)
         setVideoList(res.data)
     }catch(err){
         console.log(err)

@@ -19,7 +19,7 @@ const VideoPage = () => {
 
     const getVideoDetails = async () => {
         try{
-            const res = await axios.get('http://localhost:8082/watch/video', {
+            const res = await axios.get(`${NEXT_PUBLIC_WATCH_URL}/watch/video`, {
                 params: {
                     id: id
                 }
